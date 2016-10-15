@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/learn2":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/learn2","hostpath":"/Users/sander/laravel/learn2","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/sander/laravel/learn2","disabled":false,"__vagrantfile":true}}}
