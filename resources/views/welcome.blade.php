@@ -75,24 +75,15 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Video Server v1.0
+                    Laravel 5.3
                 </div>
 
-                <div class="links">
-                    <div>
-                        <a>Добавлен модуль статистики</a><br>
-                        <a>Поправлена ошибка #1</a><br>
-                        <a>Сайт полностью переделан на react</a>
-                    </div>
-                </div>
-
-{{--                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>--}}
+            <div class="links">
+                <a href="https://laravel.com/docs">Documentation</a>
+                <a href="https://laracasts.com">Laracasts</a>
+                <a href="https://laravel-news.com">News</a>
+                <a href="https://forge.laravel.com">Forge</a>
+                <a href="https://github.com/laravel/laravel">GitHub</a>
             </div>
         </div>
     </body>

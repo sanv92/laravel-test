@@ -25,6 +25,7 @@ class HomeController extends Controller
     {
         //$request->session()->put('sander', 'man');
 
+/*
         $request->session()->forget('sander');
 
         if ($request->session()->exists('sander')) {
@@ -35,7 +36,8 @@ class HomeController extends Controller
         }
 
         return 'fail';
+*/
 
-        //return view('home');
+        return view('home');
     }
 }

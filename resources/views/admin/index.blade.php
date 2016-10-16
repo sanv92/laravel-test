@@ -1,7 +1,15 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: sander
- * Date: 15/10/2016
- * Time: 15:59
- */
+@extends('admin.layouts.app')
+
+@section('content')
+    <ul>
+        <li>
+            <a href="{{ url('users') }}">users</a>
+        </li>
+        <li>
+            <a href="{{ url('posts') }}">posts</a>
+        </li>
+        <li>
+            <a href="{{ url('categories') }}">categories</a>
+        </li>
+    </ul>
+@endsection
