@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests;
 
@@ -16,19 +19,12 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        //$users = User::all();
-
-
         $users = User::with(['roles' => function ($query) {
             $query->select(['id', 'name', 'created_at', 'updated_at']);
         }])
         ->select(['id', 'name', 'role_id', 'email', 'is_active', 'created_at', 'updated_at'])
         ->get();
 
-
-        return $users;
-
-        //exit;
         return view('admin.users.index', compact('users'));
     }
 
@@ -39,7 +35,9 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::pluck('name', 'id')->all();
+
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -48,9 +46,21 @@ class AdminUsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\UsersRequest $request)
     {
-        //return view('admin.users.show');
+
+        if ($file = $request->file('file')) {
+
+            $name = $file->getClientOriginalName();
+            $file->move('images', $name);
+
+            $result = $request->all();
+            $result['password'] = Hash::make($request->password);
+            User::create($result);
+
+        }
+
+        return redirect()->action('AdminUsersController@index');
     }
 
     /**

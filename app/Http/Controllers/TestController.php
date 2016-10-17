@@ -21,13 +21,13 @@ class TestController extends Controller
 
             $statusCode = 200;
 
-            $user = User::find(3)->role;
+            //$user = User::find(3)->role;
 
-/*            $user = User::with(['roles' => function ($query) {
+            $user = User::with(['role' => function ($query) {
                 $query->select(['id', 'name', 'created_at', 'updated_at']);
             }])
             ->select(['id', 'name', 'role_id', 'is_active', 'email'])
-            ->where('id', 4)->get();*/
+            ->where('id', 3)->get();
 
         } catch (Exception $e) {
 
@@ -46,7 +46,7 @@ class TestController extends Controller
 
     public function indexRole()
     {
-        $role = Role::find(4)->user;
+        $role = Role::find(2)->user;
 
         return $role;
     }
