@@ -3,6 +3,10 @@
 @section('content')
     <h1>Posts:index</h1>
 
+    @if (Session::has('DELETED_POST'))
+        <p style="background-color: #ff0000; color: #fff;">{{session('DELETED_POST')}}</p>
+    @endif
+
     @if ($posts)
         <table class="table">
             <tr>
@@ -21,7 +25,9 @@
                 <td>{{$post->user->name}}</td>
                 <td>{{$post->categories->name}}</td>
                 {{--<td>{{$post->photo_id}}</td>--}}
-                <td>{{$post->title}}</td>
+                <td>
+                    <a href="{{route('admin.posts.edit', $post->id)}}">{{$post->title}}</a>
+                </td>
                 <td>{{$post->content}}</td>
                 <td>{{$post->created_at->diffForHumans()}}</td>
                 <td>{{$post->updated_at->diffForHumans()}}</td>

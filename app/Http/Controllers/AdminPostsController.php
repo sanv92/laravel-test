@@ -20,7 +20,16 @@ class AdminPostsController extends Controller
      */
     public function index()
     {
-        $posts      = Posts::all();
+        $posts = Posts::with([
+            'user' => function ($query) {
+                $query->select(['id', 'name']);
+            },
+            'categories' => function ($query) {
+                $query->select(['id', 'name']);
+            }
+        ])
+        ->select(['id', 'user_id', 'category_id', 'title', 'content', 'created_at', 'updated_at'])
+        ->get();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -88,7 +97,10 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.posts.edit', compact('id'));
+        $post       = Posts::findOrFail($id);
+        $categories = Categories::pluck('name', 'id')->all();
+
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -100,7 +112,13 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+
+        $user  = Auth::user();
+
+        $user->posts()->where('id', $id)->first()->update($input);
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -109,8 +127,12 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        Posts::findOrFail($id)->delete();
+
+        $request->session()->flash('DELETED_POST', 'Post with ID: ' . $id . ' was been deleted!');
+
+        return redirect()->route('admin.posts.index');
     }
 }

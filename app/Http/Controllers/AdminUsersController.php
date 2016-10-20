@@ -20,9 +20,11 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        $users = User::with(['roles' => function ($query) {
-            $query->select(['id', 'name', 'created_at', 'updated_at']);
-        }])
+        $users = User::with([
+            'roles' => function ($query) {
+                $query->select(['id', 'name', 'created_at', 'updated_at']);
+            }
+        ])
         ->select(['id', 'name', 'role_id', 'email', 'is_active', 'created_at', 'updated_at'])
         ->get();
 
