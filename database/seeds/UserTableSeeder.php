@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
 
-        $categories = [
+        $users = [
             [
                 'name' => 'Sander',
                 'role_id' => 1,
@@ -55,7 +55,7 @@ class UserTableSeeder extends Seeder
             ]
         ];
 
-        foreach ($categories as $key => $value) {
+        foreach ($users as $key => $value) {
             User::create([
                 'name'      => $value['name'],
                 'role_id'   => $value['role_id'],

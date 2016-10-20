@@ -1,7 +1,6 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: sander
- * Date: 15/10/2016
- * Time: 16:02
- */
+@extends('admin.layouts.app')
+
+@section('content')
+    <h1>Posts:edit</h1>
+
+@endsection

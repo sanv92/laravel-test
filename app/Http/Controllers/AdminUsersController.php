@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AdminUsersController extends Controller
 {
@@ -48,19 +49,18 @@ class AdminUsersController extends Controller
      */
     public function store(Requests\UsersRequest $request)
     {
-
         if ($file = $request->file('file')) {
 
             $name = $file->getClientOriginalName();
             $file->move('images', $name);
 
-            $result = $request->all();
-            $result['password'] = Hash::make($request->password);
-            User::create($result);
-
+            $input = $request->all();
+            $input['password'] = Hash::make($request->password);
         }
 
-        return redirect()->action('AdminUsersController@index');
+        User::create($input);
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -82,7 +82,10 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit');
+        $user  = User::findOrFail($id);
+        $roles = Role::pluck('name', 'id')->all();
+
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -92,9 +95,15 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\UsersEditRequest $request, $id)
     {
-        //
+        $user  = User::findOrFail($id);
+
+        $input = $request->all();
+
+        $user->update($input);
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -103,8 +112,15 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        User::findOrFail($id)->delete();
+
+        $request->session()->flash('DELETED_USER', 'User with ID: ' . $id . ' was been deleted!');
+
+        //Session::set('DELETED_USER', 'User with ID: ' . $id . ' was been deleted!');
+
+        return redirect()->route('admin.users.index');
     }
+
 }

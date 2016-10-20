@@ -19,9 +19,47 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+//Route::get('/admin/users', ['as' => 'admin.users', 'uses' => 'AdminUsersController@index']);
 
-Route::get('admin', 'AdminHomeController@index');
-Route::resource('admin/user', 'AdminUsersController');
+
+Route::group(['middleware' => 'admin'], function () {
+
+    //Route::get('admin', 'AdminHomeController@index');
+
+    Route::group(['prefix' => 'admin'], function () {
+
+        Route::get('/', [
+            'as' => 'admin.index',
+            'uses' => 'AdminHomeController@index'
+        ]);
+
+        Route::resource('users', 'AdminUsersController', [
+            'names' => [
+                'index'  => 'admin.users.index',
+                'create' => 'admin.users.create',
+                'edit'   => 'admin.users.edit',
+            ]
+        ]);
+
+        Route::resource('posts', 'AdminPostsController', [
+            'names' => [
+                'index'  => 'admin.posts.index',
+                'create' => 'admin.posts.create',
+                'edit'   => 'admin.posts.edit',
+            ]
+        ]);
+
+    });
+
+});
+
+//Route::resource('admin/users', ['as' => 'admin.users', 'uses' => 'AdminUsersController']);
+
+/*Route::resource('admin/user', 'AdminUsersController', [
+    'as' => 'admin.users'
+]);*/
+
+//Route::resource('admin/user', ['as' => 'admin.users'], 'AdminUsersController');
 
 /**
  * test one to one

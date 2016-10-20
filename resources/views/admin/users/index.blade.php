@@ -2,6 +2,10 @@
 
 @section('content')
     <h1>Admin:index</h1>
+    @if (Session::has('DELETED_USER'))
+        <p style="background-color: #ff0000; color: #fff;">{{session('DELETED_USER')}}</p>
+    @endif
+
     @if ($users)
         <table class="table">
         <tr>
@@ -16,7 +20,9 @@
         @foreach($users as $key => $user)
             <tr>
                 <td>{{$user->id}}</td>
-                <td>{{$user->name}}</td>
+                <td>
+                    <a href="{{route('admin.users.edit', $user->id)}}">{{$user->name}}</a>
+                </td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->roles->name}}</td>
                 <td>{{$user->is_active === 1 ? 'Active' : 'Not Active'}}</td>
