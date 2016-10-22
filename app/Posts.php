@@ -27,8 +27,14 @@ class Posts extends Model
         return $this->belongsTo('App\Categories', 'category_id');
     }
 
-/*    public function user() {
+    public function comments() {
+        return $this->hasMany('App\Post');
+    }
+
+/*
+    public function user() {
         return $this->belongsTo('App\User');
-    }*/
+    }
+*/
 
 }

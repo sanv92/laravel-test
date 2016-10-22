@@ -19,13 +19,32 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-//Route::get('/admin/users', ['as' => 'admin.users', 'uses' => 'AdminUsersController@index']);
+/**
+ * Web
+ */
+Route::group(['middleware' => 'web', 'prefix' => 'posts'], function () {
+
+    Route::get('/', [
+        'as'   => 'posts.index',
+        'uses' => 'PostController@index'
+    ]);
+
+    Route::get('{id}', [
+        'as'   => 'post.show',
+        'uses' => 'PostController@show'
+    ]);
+
+});
 
 
+/**
+ * Admin
+ */
 Route::group(['middleware' => 'admin'], function () {
 
-    //Route::get('admin', 'AdminHomeController@index');
-
+    /**
+     * Group:admin
+     */
     Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/', [
@@ -49,6 +68,30 @@ Route::group(['middleware' => 'admin'], function () {
             ]
         ]);
 
+
+        /**
+         * Group:comments
+         */
+        Route::group(['prefix' => 'comments'], function () {
+
+            Route::resource('/', 'PostCommentsController', [
+                'names' => [
+                    'index'  => 'admin.comments.index',
+                    'create' => 'admin.comments.create',
+                    'edit'   => 'admin.comments.edit',
+                ]
+            ]);
+
+            Route::resource('replies', 'CommentRepliesController', [
+                'names' => [
+                    'index'  => 'admin.comments.replies.index',
+                    'create' => 'admin.comments.replies.create',
+                    'edit'   => 'admin.comments.replies.edit',
+                ]
+            ]);
+
+        });
+
     });
 
 });
@@ -66,6 +109,7 @@ Route::group(['middleware' => 'admin'], function () {
  */
 Route::get('/one_user', 'TestController@index');
 Route::get('/one_rule', 'TestController@indexRole');
+
 /**
  * test one to many
  */
