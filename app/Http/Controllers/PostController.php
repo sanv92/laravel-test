@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Posts;
+use App\Comment;
+
 //use App\Categories;
 
 class PostController extends Controller
@@ -27,24 +29,44 @@ class PostController extends Controller
             }
         ])
         ->select(['id', 'user_id', 'category_id', 'title', 'content', 'created_at', 'updated_at'])
-        ->get();
+        ->paginate(2);
 
         return view('posts.index', compact('posts'));
     }
 
     public function show($id) {
 
-        //$post = Posts::where('id', $id)->firstOrFail();
-
         $post = Posts::with([
-            'user' => function ($query) {
-                $query->select(['*']);
+            'comments' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'comments.user'  => function ($query) {
+                //$query->select('*');
             }
         ])
-        ->select('*')
+        //->select('*')
         ->where('id', $id)
         ->firstOrFail();
 
         return view('posts.show', compact('post'));
     }
 }
+
+
+/*
+
+
+                $query::with([
+                    'user' => function ($query) {
+                        $query->select('*');
+                    }
+                ])->select('*')->orderBy('created_at', 'desc');
+
+
+$query::with([
+    'user' => function ($query) {
+        $query->select('*');
+    }
+])->select(['id', 'name']);
+
+*/

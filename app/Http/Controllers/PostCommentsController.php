@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class PostCommentsController extends Controller
 {
@@ -36,7 +37,18 @@ class PostCommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input              = $request->all();
+        $input['is_active'] = 1;
+        $user               = Auth::user();
+
+        $user->comments()->create($input);
+
+        //$result['user_id'] = intval(Auth::user()->id);
+        //$result['is_active'] = 1;
+
+        $request->session()->flash('NEW_COMMENT', 'New Comment was been added!');
+
+        return redirect()->back();
     }
 
     /**
